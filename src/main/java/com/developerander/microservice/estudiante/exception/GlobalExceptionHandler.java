@@ -9,6 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -86,6 +88,21 @@ public class GlobalExceptionHandler {
                                                            HttpServletRequest request) {
         return ResponseEntity.badRequest()
                 .body(build(HttpStatus.BAD_REQUEST, "La peticion contiene datos invalidos", request));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiError> handleTypeMismatch(MethodArgumentTypeMismatchException ex,
+                                                       HttpServletRequest request) {
+        return ResponseEntity.badRequest()
+                .body(build(HttpStatus.BAD_REQUEST,
+                        "El valor '" + ex.getValue() + "' no es valido para el parametro '" + ex.getName() + "'",
+                        request));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiError> handleNoResource(NoResourceFoundException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(build(HttpStatus.NOT_FOUND, "No existe el recurso solicitado", request));
     }
 
     @ExceptionHandler(Exception.class)
