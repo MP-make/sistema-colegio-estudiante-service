@@ -13,14 +13,35 @@ Microservicio de estudiantes y apoderados del sistema colegio (arquitectura SOA)
 
 ## Configuracion
 
-| Propiedad | Valor |
-|---|---|
-| Puerto | `8082` |
-| Base de datos | `db_estudiantes` (localhost:3306) |
-| Usuario | `root` |
-| Contrasena | `root` |
+| Propiedad | Valor por defecto | Variable de entorno |
+|---|---|---|
+| Puerto | `8082` | `SERVER_PORT` |
+| Base de datos | `db_estudiantes` (localhost:3306) | `DB_URL` |
+| Usuario | `root` | `DB_USERNAME` |
+| Contrasena | `root` | `DB_PASSWORD` |
 
-La configuracion vive en `src/main/resources/application.properties`.
+La configuracion vive en `src/main/resources/application.properties`. Los valores
+por defecto funcionan sin configuracion adicional; las variables de entorno
+permiten apuntar a otra instancia de MySQL sin modificar el codigo.
+
+## Base de datos
+
+La base `db_estudiantes` debe existir antes de arrancar el servicio. Para
+levantarla localmente con Docker:
+
+```bash
+docker compose up -d
+```
+
+Esto expone MySQL en `localhost:3306` con usuario `root` / contrasena `root` y
+crea automaticamente la base `db_estudiantes`. Hibernate crea/actualiza la tabla
+`estudiantes` al iniciar (`spring.jpa.hibernate.ddl-auto=update`).
+
+Si ya tienes un MySQL local, solo crea la base:
+
+```sql
+CREATE DATABASE IF NOT EXISTS db_estudiantes;
+```
 
 ## Autonomia de datos (SOA)
 
