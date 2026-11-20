@@ -57,6 +57,13 @@ chmod +x ./mvnw
 ./mvnw clean spring-boot:run
 ```
 
+## Documentacion de la API (Swagger UI)
+
+Con el servicio en marcha:
+
+- Swagger UI: <http://localhost:8082/swagger-ui.html>
+- OpenAPI JSON: <http://localhost:8082/v3/api-docs>
+
 ## Endpoints
 
 | Metodo | Ruta | Descripcion |
